@@ -1,0 +1,52 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Bill History - Hotel Climate{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-5 mt-3">
+        <div>
+            <h2 class="fw-bold mb-1">Bill History</h2>
+            <p class="text-muted mb-0">Archive of all past transactions</p>
+        </div>
+        <a href="{% url 'core:checkout' %}" class="btn btn-outline-secondary rounded-pill px-4">Back to Checkout</a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4 py-3">ID</th>
+                            <th class="py-3">Room</th>
+                            <th class="py-3">Guest ID</th>
+                            <th class="py-3">Check In</th>
+                            <th class="py-3">Check Out</th>
+                            <th class="py-3 text-end">Accom. Fee</th>
+                            <th class="py-3 text-end">AC Fee</th>
+                            <th class="pe-4 py-3 text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bill in bills %}
+                        <tr onclick="window.location.href='{% url 'core:bill_detail' bill.id %}'" style="cursor: pointer;">
+                            <td class="ps-4 fw-bold text-muted">#{{ bill.id }}</td>
+                            <td><span class="badge bg-light text-dark border">{{ bill.room.room_id }}</span></td>
+                            <td>{{ bill.guest_id }}</td>
+                            <td>{{ bill.check_in_time|date:"Y-m-d H:i" }}</td>
+                            <td>{{ bill.check_out_time|date:"Y-m-d H:i" }}</td>
+                            <td class="text-end">¥{{ bill.accommodation_fee|floatformat:2 }}</td>
+                            <td class="text-end">¥{{ bill.ac_fee|floatformat:2 }}</td>
+                            <td class="pe-4 text-end fw-bold text-primary">¥{{ bill.total_amount|floatformat:2 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center py-5 text-muted">No history records found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

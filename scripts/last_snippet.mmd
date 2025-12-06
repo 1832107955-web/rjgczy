@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant API as System
+    participant Room as 客房
+    participant Service as ServiceObject
+    participant Detail as 详单
+
+    API->>Room: query_AC_usage(RoomId, date_in, date_out)
+    Note right of Room: 返回空调使用请求记录
+    Room-->>API: Return(list_of_requests)
+    API->>Detail: Create_DetailRecord_AC(RoomId, date_in, date_out)
+    Note right of Detail: 为每条请求生成详单项\n(请求时间, 持续时间, 风速, 费率, 费用)
+    Detail-->>API: Return(list_DR_AC)

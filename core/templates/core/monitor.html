@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Monitor - Hotel Climate{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-5 mt-3">
+        <div>
+            <h2 class="fw-bold mb-1">System Monitor</h2>
+            <p class="text-muted mb-0">Live status of all connected rooms</p>
+        </div>
+        <div class="d-flex gap-2 align-items-center">
+            <select id="floor-select" class="form-select" style="width: auto;">
+                <option value="all">All Floors</option>
+            </select>
+            <a href="{% url 'core:index' %}" class="btn btn-outline-secondary rounded-pill px-4">Back</a>
+        </div>
+    </div>
+
+    <div id="monitor-container">
+        <!-- Floors will be inserted here by JS -->
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'core/js/monitor.js' %}?v=2.3"></script>
+{% endblock %}

@@ -1,0 +1,12 @@
+sequenceDiagram
+participant API as System
+participant ACBill as 空调使用费账单
+participant Detail as 详单
+participant Room as 客房
+
+API->>Detail: query_DetailRecords(RoomId, date_in, date_out)
+Detail-->>API: Return(list_DR_AC)
+API->>ACBill: calculate_AC_Fee(list_DR_AC)
+ACBill-->>API: Return(Total_Fee_of_AC)
+API->>ACBill: Create_AC_Bill(Room_Id, date)
+ACBill-->>API: Return(isOK)

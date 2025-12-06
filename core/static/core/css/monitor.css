@@ -1,0 +1,9 @@
+.room-card { transition: all 0.3s; }
+.status-serving { border-color: #28a745; background-color: #e8f5e9; }
+.status-waiting { border-color: #ffc107; background-color: #fff3cd; }
+.status-idle { border-color: #17a2b8; background-color: #e0f7fa; }
+.status-off { border-color: #6c757d; background-color: #f8f9fa; }
+
+.badge-small { font-size: 0.6rem; }
+.status-text { font-size: 0.75rem; letter-spacing: 0.5px; }
+.info-text { font-size: 0.8rem; }

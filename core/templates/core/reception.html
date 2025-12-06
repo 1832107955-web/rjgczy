@@ -1,0 +1,103 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Reception - Hotel Climate{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'core/css/reception.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-5 mt-3">
+        <div>
+            <h2 class="fw-bold mb-1">Reception Desk</h2>
+            <p class="text-muted mb-0">Guest management and billing</p>
+        </div>
+        <a href="{% url 'core:index' %}" class="btn btn-outline-secondary rounded-pill px-4">Back</a>
+    </div>
+
+    <div class="row g-4">
+        <!-- Check In -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center icon-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+                                <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                            </svg>
+                        </div>
+                        <h5 class="mb-0">Check In</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <label class="form-label text-muted small text-uppercase fw-bold">Room Selection</label>
+                        <select id="checkin-room" class="form-select">
+                            {% for room in rooms %}
+                            <option value="{{ room.room_id }}">{{ room.room_id }} ({{ room.occupancy_status }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-muted small text-uppercase fw-bold">Guest Name</label>
+                        <input type="text" class="form-control" id="guest-name" placeholder="Enter full name">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-muted small text-uppercase fw-bold">ID Number</label>
+                        <input type="text" class="form-control" id="guest-id" placeholder="Enter ID number">
+                    </div>
+                    <button id="btn-checkin" class="btn btn-primary w-100 py-3">Confirm Check In</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Check Out -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center icon-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 14.5 14h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+                                <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                            </svg>
+                        </div>
+                        <h5 class="mb-0">Check Out</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <label class="form-label text-muted small text-uppercase fw-bold">Room Selection</label>
+                        <select id="checkout-room" class="form-select">
+                            {% for room in rooms %}
+                            <option value="{{ room.room_id }}">{{ room.room_id }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button id="btn-checkout" class="btn btn-success w-100 py-3 mb-4">Process Check Out</button>
+                    
+                    <div id="bill-area" class="p-4 bg-light rounded-3 d-none border">
+                        <h6 class="fw-bold mb-3">Bill Summary</h6>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Accommodation</span>
+                            <span id="bill-accom" class="fw-medium"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="text-muted">Air Conditioning</span>
+                            <span id="bill-ac" class="fw-medium"></span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="fw-bold">Total</span>
+                            <span id="bill-total" class="h4 mb-0 text-primary"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'core/js/reception.js' %}?v=2.0"></script>
+{% endblock %}

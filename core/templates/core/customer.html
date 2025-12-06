@@ -1,0 +1,96 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Room {{ room.room_id }}{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'core/css/customer.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div id="main-container" data-room-id="{{ room.room_id }}" class="row justify-content-center mt-4">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0 overflow-hidden">
+                <!-- Header -->
+                <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0 fw-bold">Room {{ room.room_id }}</h5>
+                        <small class="text-muted">Climate Control</small>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span id="status-badge" class="badge rounded-pill bg-secondary px-3 py-2">OFF</span>
+                        <a href="{% url 'core:index' %}" class="btn btn-sm btn-outline-secondary rounded-pill">Exit</a>
+                    </div>
+                </div>
+
+                <!-- Main Display -->
+                <div class="card-body px-4 pb-5 text-center">
+                    <div class="py-4 position-relative">
+                        <h1 class="display-1 fw-bold mb-0" id="current-temp">--°</h1>
+                        <p class="text-muted">Current Temperature</p>
+                        
+                        <div class="mt-3">
+                            <span class="text-muted small text-uppercase fw-bold">Total Cost</span>
+                            <div class="h4 text-primary mt-1" id="fee">¥0.00</div>
+                        </div>
+                    </div>
+
+                    <!-- Power Button -->
+                    <button id="power-btn" class="btn btn-secondary w-100 py-3 mb-4 fw-bold shadow-sm">
+                        Turn On
+                    </button>
+
+                    <!-- Controls -->
+                    <div id="controls" class="transition-fade controls-disabled">
+                        
+                        <!-- Mode Selection -->
+                        <div class="bg-light rounded-3 p-1 d-flex mb-4">
+                            <input type="radio" class="btn-check" name="mode" id="mode-cool" value="COOL">
+                            <label class="btn btn-sm flex-grow-1 rounded-3 border-0" for="mode-cool">Cool</label>
+                            
+                            <input type="radio" class="btn-check" name="mode" id="mode-heat" value="HEAT">
+                            <label class="btn btn-sm flex-grow-1 rounded-3 border-0" for="mode-heat">Heat</label>
+                        </div>
+
+                        <!-- Temperature Control -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center bg-light rounded-4 p-2">
+                                <button id="btn-temp-minus" class="btn btn-white shadow-sm rounded-circle temp-btn p-0 d-flex align-items-center justify-content-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                                    </svg>
+                                </button>
+                                <div class="text-center flex-grow-1">
+                                    <span class="small text-muted text-uppercase fw-bold d-block">Target</span>
+                                    <span class="h3 mb-0 fw-bold"><span id="target-temp-display">25.0</span>°</span>
+                                </div>
+                                <button id="btn-temp-plus" class="btn btn-white shadow-sm rounded-circle temp-btn p-0 d-flex align-items-center justify-content-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Fan Speed -->
+                        <div>
+                            <label class="form-label text-muted small text-uppercase fw-bold mb-2">Fan Speed</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="fan" id="fan-low" value="LOW">
+                                <label class="btn btn-outline-secondary border-0 bg-light mx-1 rounded-3" for="fan-low">Low</label>
+                                
+                                <input type="radio" class="btn-check" name="fan" id="fan-mid" value="MID">
+                                <label class="btn btn-outline-secondary border-0 bg-light mx-1 rounded-3" for="fan-mid">Mid</label>
+                                
+                                <input type="radio" class="btn-check" name="fan" id="fan-high" value="HIGH">
+                                <label class="btn btn-outline-secondary border-0 bg-light mx-1 rounded-3" for="fan-high">High</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'core/js/customer.js' %}?v=2.0"></script>
+{% endblock %}

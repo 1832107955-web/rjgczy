@@ -1,0 +1,101 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Bill Detail - Hotel Climate{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-5 mt-3">
+        <div>
+            <h2 class="fw-bold mb-1">Bill Detail</h2>
+            <p class="text-muted mb-0">Transaction ID: #{{ bill.id }}</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button onclick="window.print()" class="btn btn-outline-primary rounded-pill px-4 d-print-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer me-2" viewBox="0 0 16 16">
+                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                    <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+                </svg>
+                Print
+            </button>
+            <a href="{% url 'core:bill_history' %}" class="btn btn-outline-secondary rounded-pill px-4 d-print-none">Back</a>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-5">
+                    <!-- Header -->
+                    <div class="text-center mb-5">
+                        <h3 class="fw-bold">Hotel Climate Bill</h3>
+                        <p class="text-muted">Thank you for staying with us</p>
+                    </div>
+
+                    <!-- Info Grid -->
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <p class="mb-1 text-muted small text-uppercase fw-bold">Guest Info</p>
+                            <h5 class="fw-bold">{{ bill.guest_id }}</h5>
+                            <p class="mb-0">Room: {{ bill.room.room_id }}</p>
+                        </div>
+                        <div class="col-6 text-end">
+                            <p class="mb-1 text-muted small text-uppercase fw-bold">Date</p>
+                            <p class="mb-0">Check In: {{ bill.check_in_time|date:"Y-m-d H:i" }}</p>
+                            <p class="mb-0">Check Out: {{ bill.check_out_time|date:"Y-m-d H:i" }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Fees -->
+                    <div class="p-4 bg-light rounded-3 border mb-4">
+                        <h6 class="fw-bold mb-3 border-bottom pb-2">Charges</h6>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Accommodation Fee</span>
+                            <span class="fw-medium">¥{{ bill.accommodation_fee|floatformat:2 }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="text-muted">Air Conditioning Fee</span>
+                            <span class="fw-medium">¥{{ bill.ac_fee|floatformat:2 }}</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="fw-bold h5 mb-0">Total Amount</span>
+                            <span class="h3 mb-0 text-primary">¥{{ bill.total_amount|floatformat:2 }}</span>
+                        </div>
+                    </div>
+
+                    <!-- AC Details -->
+                    <div class="mt-5">
+                        <h6 class="fw-bold mb-3">AC Usage Details</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped mb-0" style="font-size: 0.9rem;">
+                                <thead>
+                                    <tr>
+                                        <th>Start Time</th>
+                                        <th>End Time</th>
+                                        <th>Mode</th>
+                                        <th>Fan</th>
+                                        <th class="text-end">Fee</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for session in ac_sessions %}
+                                    <tr>
+                                        <td>{{ session.start_time|date:"Y-m-d H:i:s" }}</td>
+                                        <td>{{ session.end_time|date:"Y-m-d H:i:s"|default:"-" }}</td>
+                                        <td>{{ session.mode }}</td>
+                                        <td>{{ session.fan_speed }}</td>
+                                        <td class="text-end">¥{{ session.fee|floatformat:2 }}</td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted">No AC usage recorded</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
