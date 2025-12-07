@@ -71,3 +71,7 @@ media
 # OS files
 .DS_Store
 Thumbs.db
+docs/images/checked/
+*.jpg
+__pycache__/
+*.pyc
